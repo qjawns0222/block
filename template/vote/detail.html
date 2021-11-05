@@ -1,0 +1,132 @@
+{% extends 'base.html'%}
+{% block auth %}
+{% load mathfilters %}
+
+<div class="container mt-5">
+    <h1 style="color: floralwhite ; font-weight: bold;"><b>{{top.subject}}</b></h1>
+    <div style=" color: floralwhite; font-weight: bold; font-size: 25px;">{{top.content}}</div>
+    <div style="color: floralwhite ;" class="text-end"><b>작성자:{{top.writer}}</b></div>
+    <hr>
+   
+    <form method="POSt" action="{% url 'vote:vote' top.id %}">
+        {% csrf_token %}
+        <div class="row">
+            {% for i in cho %}
+            <div class="col-lg-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{i.pic.url}}" class="card-img-top" alt="...">
+
+                    <div class="card-body">
+                    <p class="card-text">
+                        <div style="font-weight: bold; font-size: 25px;">
+                            {% if not user in top.voter.all %} <input class="form-check-input text-end" type="radio" id="checkboxNoLabel" value="{{i.id}}" aria-label="..." name="select">{% endif %}{{i.select}}
+                                
+                            
+                        </div>
+                            {{i.comment}}
+                            {% if user in top.voter.all %}
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width:{{ i.voter.all.count|div:top.voter.all.count|mul:100 }}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{ i.voter.all.count|div:top.voter.all.count|mul:100 }}%</div>
+                            </div>
+                            {% endif %}
+                            
+                    </p>
+                    </div>
+                </div>
+                
+            
+            </div>
+            {% endfor %}
+            {% if not user in top.voter.all %}
+            <button>투표</button>
+
+            
+            {% endif %}
+        </div>
+    </form>
+    
+    {% if  user in top.voter.all %}
+    <a href="{% url 'vote:cancel' top.id %}"><button style="width: 81rem;">투표취소</button></a>
+
+    
+    {% endif %}
+
+    <hr>
+    <h4>댓글</h4>
+    <hr>
+    {% for i in rep %}
+    <div class="card mb-3" style="width: 81rem;">
+        <div class="row g-0">
+          <div class="col-md-4">  
+            <img src="{{i.getpic}}"  style="width: 18rem;">
+          </div>
+          <div class="col-md-8 ">
+            <div class="card-body">
+                {% if user.username == i.replyer %}
+                    <div class="text-end"><a href="{% url 'vote:delrep' i.id top.id %}"><button type="button" style="background-color: rgb(1, 42, 29); color: red; font-weight: bold; ">x</button></a></div>
+                {% endif %}
+                <h5 class="card-title">{{i.replyer}}</h5>
+                <p class="card-text">{{i.comment}}</p>
+            </div>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if rep.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{% url 'vote:detail' top.id %}?page={{1}}" aria-label="Previous">
+              <span aria-hidden="true"><<</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{% url 'vote:detail' top.id %}?page={{rep.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true"><</span>
+            </a>
+          </li>
+          {% endif  %}
+          {% for i in rep.paginator.page_range %}
+            <li class="page-item {% if rep.number == i %}active{% endif %}"><a class="page-link" href="{% url 'vote:detail' top.id %}?page={{i}}">{{i}}</a></li>
+          {% endfor %}
+          {% if rep.has_next %}
+          <li class="page-item">
+            
+            <a class="page-link" href="{% url 'vote:detail'  top.id %}?page={{rep.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true">></span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{% url 'vote:detail'  top.id %}?page={{rep.paginator.num_pages}}" aria-label="Next">
+              <span aria-hidden="true">>></span>
+            </a>        
+          </li>
+        {%endif%}
+        </ul>
+    </nav>
+    <hr>
+    <h4>댓글달기</h4>
+    <form method="POST" action="{% url 'vote:createreply' top.id %}" enctype="multipart/form-data">
+        {% csrf_token %} 
+        <div class="card mb-3" style="width: 81rem;">
+            <div class="row g-0">
+                <div class="col-md-4">  
+                    <img src="{{user.getpic}}" name='pic' style="width: 18rem;">
+                </div>
+                
+                <div class="col-md-8 ">
+                    <div class="card-body">
+                        <h4><input type="text" value="{{user.username}}" disabled class="card-title" name="replyer"></h4>
+                        <input type="text" name="comment12" class="card-text">        
+                    </div>
+                    <button>입력</button>
+                
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>
+{% endblock %}

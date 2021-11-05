@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block auth %}
+
+<div class="container mt-5 mb-5">
+    <h1><b>#{{name}}</b></h1>
+    <h5>총게시글 {{gbo.count}} 개</h5>
+    <hr>
+    <div class="row">
+        {% for i in gbo %}
+            <div class="col-lg-4">
+                <img src={{ i.pic.url }}>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

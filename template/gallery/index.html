@@ -1,0 +1,153 @@
+{% extends 'base.html'%}
+{% block noauth %}
+<div class=" container mt-5 text-center">
+    <h4 class="text-center" style="color: floralwhite ;" font-weight: bold;">갤러리</h4>
+    
+    <hr>
+    
+    <div class="row">
+    
+        {% for i in gal %}
+            <div class="col-lg-3 mt-3 mb-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{i.pic.url}}" class="card-img-top" alt="{{i.pic.url}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{i.subject}}</h5>
+                        <p class="card-text">{{i.summary}}</p>
+                        <a href="{% url 'gallery:detail' i.id%}" class="btn btn-primary">상세정보</a>
+                    </div>
+                </div>
+            </div>
+            
+        {% endfor %}
+        
+        
+        <div class="text-center">
+            <ul class="pagination ">
+                {% if gal.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'gallery:index' %}&cate={{cate}}&kw={{kw}}"><<</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'gallery:index' %}?page={{gal.previous_page_number}}&cate={{cate}}&kw={{kw}}"><</a>
+                </li>
+                {% endif %}
+              {% for i in gal.paginator.page_range%}
+                <li class="page-item {% if gal.number == i %}active{% endif %} "><a class="page-link" href="{% url 'gallery:index' %}?page={{i}}&cate={{cate}}&kw={{kw}}">{{i}}</a></li>
+              {% endfor %}
+              {% if gal.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'gallery:index' %}?page={{gal.next_page_number}}&cate={{cate}}&kw={{kw}}"> > </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'gallery:index' %}?page={{gal.paginator.num_pages}}&cate={{cate}}&kw={{kw}}">>></a>
+                </li>
+              {% endif %}
+            </ul>
+
+
+        </div>
+
+
+
+
+
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-lg-2">
+                <select class="form-select" name="cate" aria-label="Default select example">
+                    <option value="sub" {% if cate == 'sub' %} selected {% endif %}>이름</option>
+                    <option value="con" {% if cate == 'con' %} selected {% endif %}>내용</option>
+                    <option value="wri" {% if cate == 'wri' %} selected {% endif %}>작성자</option>
+                </select>
+            </div>
+            <div class="col-lg-8">
+                <input type="text" name="kw" value="{{kw}}" class="form-control">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-info form-control">검색</button>
+            </div>
+        </div>
+    </form>
+
+    
+    
+    
+
+</div>
+{% endblock %}
+
+{% block auth %}
+<div class=" container mt-5">
+    <h4 style="color: floralwhite ;" font-weight: bold;">갤러리</h4>
+    <div class="text-end"><a  href="{% url 'gallery:create' %}"><button type="button" class="btn btn-danger">챔피언만들기</button></a></div>
+    <hr>
+    
+    <div class="row">
+    
+        {% for i in gal %}
+            <div class="col-lg-3 mt-3 mb-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{i.pic.url}}" class="card-img-top" alt="{{i.pic.url}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{i.subject}}</h5>
+                        <p class="card-text">{{i.content}}</p>
+                        <a href="{% url 'gallery:detail' i.id%}" class="btn btn-primary">상세정보</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="text-center">
+            <ul class="pagination ">
+                {% if gal.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'gallery:index' %}&cate={{cate}}&kw={{kw}}"><<</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'gallery:index' %}?page={{gal.previous_page_number}}&cate={{cate}}&kw={{kw}}"><</a>
+                </li>
+                {% endif %}
+              {% for i in gal.paginator.page_range%}
+                <li class="page-item {% if gal.number == i %}active{% endif %} "><a class="page-link" href="{% url 'gallery:index' %}?page={{i}}&cate={{cate}}&kw={{kw}}">{{i}}</a></li>
+              {% endfor %}
+              {% if gal.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'gallery:index' %}?page={{gal.next_page_number}}&cate={{cate}}&kw={{kw}}"> > </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'gallery:index' %}?page={{gal.paginator.num_pages}}&cate={{cate}}&kw={{kw}}">>></a>
+                </li>
+              {% endif %}
+            </ul>
+        </div> 
+            
+
+
+
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-lg-2">
+                <select class="form-select" name="cate" aria-label="Default select example">
+                    <option value="sub" {% if cate == 'sub' %} selected {% endif %}>이름</option>
+                    <option value="con" {% if cate == 'con' %} selected {% endif %}>내용</option>
+                    <option value="wri" {% if cate == 'wri' %} selected {% endif %}>작성자</option>
+                </select>
+            </div>
+            <div class="col-lg-8">
+                <input type="text" name="kw" value="{{kw}}" class="form-control">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-info form-control">검색</button>
+            </div>
+        </div>
+    </form>
+
+    
+    
+    
+
+</div>
+
+{% endblock %}

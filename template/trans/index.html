@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block noauth %}
+<div class="container mt-5">
+  <h1 style="color: floralwhite ;" font-weight: bold;"><b>번역기</b></h1>
+    <hr>
+  <form> 
+    <div class="row text center" style="margin:auto">
+      <div class="col-lg-5">
+        <textarea name="text1" placeholder="번역할문장을 입력하세요" style="height: 350px; width: 500px; font-weight: bold;">{{text1}}</textarea>
+      </div>
+      <div class="col-lg-2">
+        <h1 style="color: floralwhite ;" font-weight: bold;">from</h1>
+        <select class="form-select"  name="cate" multiple aria-label="multiple select example">
+          <option value="en" {% if cate == 'en' %} selected {% endif %}>영어</option>
+          <option value="ko" {% if cate == 'ko' or not cate %} selected {% endif %}>한국어</option>
+          <option value="ja" {% if cate == 'ja' %} selected {% endif %}>일본어</option>
+        </select>
+        <button>번역</button>
+        <h4 style="color: floralwhite ;" font-weight: bold;">to</h4>
+        <select class="form-select"  name="cate1" multiple aria-label="multiple select example">
+      
+          <option value="en" {% if cate1 == 'en' %} selected {% endif %}>영어</option>
+          <option value="ko" {% if cate1 == 'ko' %} selected {% endif %}>한국어</option>
+          <option value="ja" {% if cate1 == 'ja' %} selected {% endif %}>일본어</option>
+        </select>
+          
+      </div>
+      <div class="col-lg-5">
+        <textarea name="text2" disabled style="height: 350px; width: 500px; font-weight: bold;">{{text2}}</textarea>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+
+{% endblock %}
+
+{% block auth %}
+<div class="container mt-5">
+  <h1 style="color: floralwhite ;" font-weight: bold;" ><b>번역기</b></h1>
+    <hr>
+  <form> 
+    <div class="row text center" style="margin:auto">
+      <div class="col-lg-5">
+        <textarea name="text1" placeholder="번역할문장을 입력하세요" style="height: 350px; width: 500px; font-weight: bold;">{{text1}}</textarea>
+      </div>
+      <div class="col-lg-2">
+        <h1 style="color: floralwhite ;" font-weight: bold;">from</h1>
+        <select class="form-select"  name="cate" multiple aria-label="multiple select example">
+          <option value="en" {% if cate == 'en' %} selected {% endif %}>영어</option>
+          <option value="ko" {% if cate == 'ko' or not cate %} selected {% endif %}>한국어</option>
+          <option value="ja" {% if cate == 'ja' %} selected {% endif %}>일본어</option>
+        </select>
+        <button>번역</button>
+        <h4 style="color: floralwhite ;" font-weight: bold;">to</h4>
+        <select class="form-select"  name="cate1" multiple aria-label="multiple select example">
+      
+          <option value="en" {% if cate1 == 'en' %} selected {% endif %}>영어</option>
+          <option value="ko" {% if cate1 == 'ko' %} selected {% endif %}>한국어</option>
+          <option value="ja" {% if cate1 == 'ja' %} selected {% endif %}>일본어</option>
+        </select>
+          
+      </div>
+      <div class="col-lg-5">
+        <textarea name="text2" disabled style="height: 350px; width: 500px; font-weight: bold;">{{text2}}</textarea>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+
+{% endblock %}

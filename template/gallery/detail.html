@@ -1,0 +1,186 @@
+{% extends 'base.html'%}
+{% block auth %}
+<div class="container mt-3 mb-3"> 
+    <div class="text-center mt-3 mb-3"><img src="{{gal.pic.url}}"  style="width: 18rem;" class="img-c"></div>
+    <div class="input-group input-group-lg mt-3 mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-lg">이름</span>
+        <input type="text" class="form-control" value="{{gal.subject}}" disabled aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+    </div>
+    <div class="input-group input-group-lg mt-3 mb-3" style="height: 350px;">
+        <span class="input-group-text" id="inputGroup-sizing-lg">설명</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="{{gal.subject}}" disabled >
+    </div>
+    
+    {% if user == gal.key %}
+        <a href="{% url 'gallery:mod' gal.id %}"><button type="button" class="btn btn-info mb-3"  style="width: 81rem;">
+            수정
+        </button></a>
+
+
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 81rem;">
+            삭제
+        </button>
+        
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">진짜 삭제하시겠습니까???</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        삭제함으로써 해당 챔피언이 빌런이될수도 있습니다.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">생각해볼께</button>
+                    <a href="{% url 'gallery:chdel' gal.id %}"> <button  class="btn btn-primary">삭제하겠습니다</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {% endif %}
+    <hr style="color:floralwhite  ; "><br>
+    <h4 style="color: floralwhite ; font-weight: bold;">댓글</h4>
+    {% for i in rep %}
+        <div class="card mb-3" style="width: 81rem;">
+            <div class="row g-0">
+                <div class="col-md-4">  
+                    <img src="{{i.getpic}}" name='sd' style="width: 18rem;">
+                </div>
+                <div class="col-md-8 ">
+                    <div class="card-body">
+                        {% if user.username == i.replyer %}
+                            <div class="text-end"><a href="{% url 'gallery:delrep' i.id  gal.id %}"><button type="button" style="background-color: rgb(1, 42, 29); color: red; font-weight: bold; ">x</button></a></div>
+                        {% endif %}
+                        <h5 class="card-title">{{i.replyer}}</h5>
+                        <p class="card-text">{{i.comment}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if rep.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{1}}" aria-label="Previous">
+              <span aria-hidden="true"><<</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{rep.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true"><</span>
+            </a>
+          </li>
+          {% endif  %}
+          {% for i in rep.paginator.page_range %}
+            <li class="page-item {% if rep.number == i %}active{% endif %}"><a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{i}}">{{i}}</a></li>
+          {% endfor %}
+          {% if rep.has_next %}
+          <li class="page-item">
+            
+            <a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{rep.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true">></span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{rep.paginator.num_pages}}" aria-label="Next">
+              <span aria-hidden="true">>></span>
+            </a>        
+          </li>
+        {%endif%}
+        </ul>
+    </nav>
+    <hr>
+    <h4 style="color: floralwhite ; font-weight: bold;">댓글달기</h4>
+    <form method="POST" action="{% url 'gallery:createreply' gal.id %}" enctype="multipart/form-data">
+        {% csrf_token %} 
+        <div class="card mb-3" style="width: 81rem;">
+            <div class="row g-0">
+                <div class="col-md-4">  
+                    <img src="{{user.getpic}}" name='pic' style="width: 18rem;">
+                </div>
+                
+                <div class="col-md-8 ">
+                    <div class="card-body">
+                        <h4><input type="text" value="{{user.username}}" disabled class="card-title" name="replyer"></h4>
+                        <input type="text" name="comment12" class="card-text">        
+                    </div>
+                    <button>입력</button>
+                
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</div>  
+{% endblock %}
+
+{% block noauth %}
+    <div class="container mt-3 mb-3"> 
+        <div class="text-center mt-3 mb-3"><img src="{{gal.pic.url}}"  style="width: 18rem;" class="img-c"></div>
+        <div class="input-group input-group-lg mt-3 mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-lg">이름</span>
+            <input type="text" class="form-control" value="{{gal.subject}}" disabled aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+        </div>
+        <div class="input-group input-group-lg mt-3 mb-3" style="height: 350px;">
+            <span class="input-group-text" id="inputGroup-sizing-lg">설명</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="{{gal.subject}}" disabled >
+        </div>
+        {% for i in rep %}
+        <div class="card mb-3" style="width: 81rem;">
+            <div class="row g-0">
+                <div class="col-md-4">  
+                    <img src="{{i.getpic}}" name='sd' style="width: 18rem;">
+                </div>
+                <div class="col-md-8 ">
+                    <div class="card-body">
+                        {% if user.username == i.replyer %}
+                            <div class="text-end"><a href="{% url 'gallery:delrep' i.id  gal.id %}"><button type="button" style="background-color: rgb(1, 42, 29); color: red; font-weight: bold; ">x</button></a></div>
+                        {% endif %}
+                        <h5 class="card-title">{{i.replyer}}</h5>
+                        <p class="card-text">{{i.comment}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if rep.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{1}}" aria-label="Previous">
+              <span aria-hidden="true"><<</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{rep.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true"><</span>
+            </a>
+          </li>
+          {% endif  %}
+          {% for i in rep.paginator.page_range %}
+            <li class="page-item {% if rep.number == i %}active{% endif %}"><a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{i}}">{{i}}</a></li>
+          {% endfor %}
+          {% if rep.has_next %}
+          <li class="page-item">
+            
+            <a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{rep.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true">></span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{% url 'gallery:detail' gal.id %}?page={{rep.paginator.num_pages}}" aria-label="Next">
+              <span aria-hidden="true">>></span>
+            </a>        
+          </li>
+        {%endif%}
+        </ul>
+    </nav>
+    </div>
+    
+{% endblock %}

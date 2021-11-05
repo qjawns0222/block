@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+{% block auth %}
+<div class="container mt-5 mb-5">
+<h4 style="color: floralwhite ;" font-weight: bold;">챔피언 만들기</h4>
+<hr>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group input-group-lg mt-3 mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-lg">이름</span>
+            <input type="text" class="form-control"   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  name="subject">
+        </div>
+        <div class="input-group input-group-lg mt-3 mb-3" style="height: 350px;">
+            <span class="input-group-text" id="inputGroup-sizing-lg">설명</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  name="content" >
+        </div>
+        <div>
+            <div class="input-group">
+                <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload"  name="pic">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            만들기
+        </button>
+        
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">진짜 만들겠습니까?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        만듬으로써 소환사의 협곡에 혼란을 불러올수 있습니다
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">생각해볼께</button>
+                        <button  class="btn btn-primary">만들겠습니다</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

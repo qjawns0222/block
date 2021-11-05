@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block noauth %}
+<div class="container mt-5">
+    <h1 class="text-center" style="color: floralwhite ;" font-weight: bold;" >PDF리더</h1>
+    <hr>
+
+    <h4 class="mt-5" style="color: floralwhite ;" font-weight: bold;">추출할pdf파일을 넣어주세요</h4>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row mt-4 text-center">
+            <div class='col-lg-10'>
+                <input type="file" class="form-control" name="pic" value="{{ca}}">
+            </div>
+            <div class='col-lg-2'>
+                <button class="btn btn-success">추출</button>
+            </div>
+        </div>
+        
+    </form>
+    <div class="row mt-4 text-center">
+        <div class='col-lg-10'>
+        <textarea style= " width:1050px;height:350px;" name="b">{{b}}</textarea>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block auth %}
+<div class="container mt-5">
+    <h1 style="color: floralwhite ;" font-weight: bold;"><b>PDF리더</b></h1>
+    <hr>
+
+    <h4 class="mt-5" style="color: floralwhite ;" font-weight: bold;">추출할pdf파일을 넣어주세요</h4>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row mt-4 text-center">
+            <div class='col-lg-10'>
+                <input type="file" class="form-control" name="pic" value="{{ca}}">
+            </div>
+            <div class='col-lg-2'>
+                <button class="btn btn-success">추출</button>
+            </div>
+        </div>
+        
+    </form>
+    <div class="row mt-4 text-center">
+        <div class='col-lg-10'>
+        <textarea style= " width:1050px;height:350px;" name="b">{{b}}</textarea>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

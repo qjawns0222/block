@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% block auth %}
+<div class="container mt-5 mb-5">
+<h4 style="color: floralwhite ; font-weight: bold;">챔피언 고치기</h4>
+<hr>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="text-center mt-3 mb-3"><img src="{{gal.pic.url}}"  style="width: 18rem;" class="img-c"></div>
+        <div class="input-group input-group-lg mt-3 mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-lg">이름</span>
+            <input type="text" class="form-control"   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="{{gal.subject}}"  name="subject">
+        </div>
+        <div class="input-group input-group-lg mt-3 mb-3" style="height: 350px;">
+            <span class="input-group-text" id="inputGroup-sizing-lg">설명</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="{{gal.content}}" name="content" >
+        </div>
+        <div>
+            <div class="input-group">
+                <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" value="{{gal.pic.url}}" name="pic">
+            </div>
+        </div>
+
+        <button  class="btn btn-info mt-3" style="width: 81rem;">
+            수정완료
+        </button>
+    
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html'%}
+{% block auth %}
+{% load mathfilters %}
+<div class="container mt-5">
+    <h1 style="color: floralwhite; font-weight: bold;"><b>투표</b><div class="text-end"><a href="{% url 'vote:create' %}"><button class="btn btn-outline-warning" >추가</button></a></div></h1>
+    <hr>
+    <div class="row">
+      {%for i in top %}
+        <div class="col-lg-4">
+            <div class="card"{% if user in i.voter.all %} style="background-color: aquamarine;" {% endif %}>
+                <div class="card-header">
+                  투표
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{i.subject}}</h5>
+                  <p class="card-text">{{i.content}}</p>
+                  <a href="{% url 'vote:detail' i.id %}"><button  class="btn btn-primary">투표하러가기</button></a>
+                </div>
+            </div>
+        </div>
+      {% endfor %}
+      <div class="text-center">
+        <ul class="pagination ">
+            {% if top.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'vote:index' %}?page={{1}}&cate={{cate}}&kw={{kw}}"><<</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{% url 'vote:index' %}?page={{top.previous_page_number}}&cate={{cate}}&kw={{kw}}"><</a>
+            </li>
+            {% endif %}
+          {% for i in top.paginator.page_range%}
+            <li class="page-item {% if top.number == i %} active {% endif %} "><a class="page-link" href="{% url 'vote:index' %}?page={{i}}&cate={{cate}}&kw={{kw}}">{{i}}</a></li>
+          {% endfor %}
+          {% if top.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'vote:index' %}?page={{top.next_page_number}}&cate={{cate}}&kw={{kw}}"> > </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{% url 'vote:index' %}?page={{top.paginator.num_pages}}&cate={{cate}}&kw={{kw}}">>></a>
+            </li>
+          {% endif %}
+        </ul>
+      </div> 
+
+    </div>
+    <form>
+      <div class="row">
+          <div class="col-lg-2">
+              <select class="form-select" name="cate" aria-label="Default select example">
+                  <option value="top" {% if cate == 'top' %} selected {% endif %}>주제</option>
+                  <option value="con" {% if cate == 'con' %} selected {% endif %}>내용</option>
+                  <option value="wri" {% if cate == 'wri' %} selected {% endif %}>작성자</option>
+                  <option value="sel" {% if cate == 'sel' %} selected {% endif %}>보기</option>
+              </select>
+          </div>
+          <div class="col-lg-8">
+              <input type="text" name="kw" value="{{kw}}" class="form-control">
+          </div>
+          <div class="col-lg-2">
+              <button class="btn btn-info form-control">검색</button>
+          </div>
+      </div>
+    </form>
+    
+
+
+
+</div>
+{% endblock %}

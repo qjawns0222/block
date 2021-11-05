@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block noauth %}
+
+<form method="post" action="{% url 'acc:userlogin' %}">
+    {% csrf_token %}
+    <div class="container mt-5 mb-5">
+        <h1 class="text-center" style="color: floralwhite ;" font-weight: bold;">로그인</h1>
+        <div class="input-group input-group-lg mt-5">
+            <span class="input-group-text" style=" color: floralwhite; font-weight: bold; background-color: rgba(0, 132, 255, 0.199); width: 110px;" id="inputGroup-sizing-lg">아이디</span>
+            <input type="text" name="username" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+        </div>
+        <div class="input-group input-group-lg mt-4">
+            <span class="input-group-text" style=" color: floralwhite; font-weight: bold; background-color: rgba(0, 132, 255, 0.199); width: 110px;" id="inputGroup-sizing-lg">비밀번호</span>
+            <input type="password" name="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+        </div>
+        
+        <div class="mt-5" >
+            <button class="btn btn-primary" style="font-weight: bold; width: 81rem;">로그인</button>
+        </div>
+        
+    </div>
+</form>
+
+{% endblock %}
+{% block auth %}
+{% endblock %}

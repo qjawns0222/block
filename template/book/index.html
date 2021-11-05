@@ -1,0 +1,91 @@
+{% extends 'base.html'%}
+
+{% block auth %}
+
+<div class="container mt-5">
+
+    <h1 class="text-center" style="color: floralwhite ;" font-weight: bold;">즐겨찾기</h1>
+   <div class="text-end"> <a href="{% url "book:create"%}" class="btn btn-primary">생성</a></div>
+    <div class="row ">
+        
+        {% for i in blist %}
+            <div class="col-lg-4 mt-5">
+                <div class="card text-center">
+                    <div class="card-header">
+                        Featured
+                    </div>
+                    <div class="card-body">
+                        {% if i.impo %}
+                        <h5 class="card-title mb-3 "><mark style="background-color: rgb(247, 247, 17,0.455);"><b>{{i.site_name|upper}}</b></mark></h5>
+                        {% else %}
+                        <h5 class="card-title mb-3 "><b>{{i.site_name|upper}}</b></h5>
+                        {% endif %}
+                        <a href="{{i.site_url}}" class="btn btn-primary">link</a>
+                        <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}">
+    삭제
+</button>
+
+  <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">삭제하시겠습니까?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          진짜 지우게??
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <a href="{% url 'book:linkdel' i.id %}"><button type="button" class="btn btn-primary">삭제</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        생성일{{i.cttime | date:'Y.M.D'}}}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if blist.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{% url 'book:index' %}?page=1" aria-label="<">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{% url 'book:index' %}?page={{blist.previous_page_number}}" aria-label="<">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif%}
+          
+          {% for i in blist.paginator.page_range %}
+          <li class="page-item {% if blist.number == i %}active{% endif %}"><a class="page-link " href="{% url 'book:index' %}?page={{i}}">{{i}}</a></li>
+          {% endfor %}
+          
+          {% if blist.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="{% url 'book:index' %}?page={{blist.next_page_number}}" aria-label=">">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{% url 'book:index' %}?page={{blist.paginator.num_pages}}" aria-label=">>">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif%}
+        </ul>
+      </nav>
+    
+</div>
+
+{% endblock %}
